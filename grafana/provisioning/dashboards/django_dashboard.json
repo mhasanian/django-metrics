@@ -22,7 +22,7 @@
       },
       "targets": [
         {
-          "expr": "rate(app_http_request_latency_seconds_sum[10s]) / rate(app_http_request_latency_seconds_count[10s])",
+          "expr": "rate(django_request_latency_seconds_sum[10s])/rate(django_request_latency_seconds_count[10s])",
           "legendFormat": "{{ method }} - {{ view_name }}",
           "refId": "A"
         }
