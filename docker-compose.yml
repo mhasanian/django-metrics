@@ -10,7 +10,7 @@ services:
       # Mount the shared metrics directory
       - ./metrics-data:/app/metrics-data
     restart: unless-stopped
-  
+
   redis:
     image: redis:7.4
     container_name: redis
