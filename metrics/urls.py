@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import metrics_view
+from .views import prometheus_metrics_view, redis_metrics_view
 
 app_name = 'metrics'
 
 urlpatterns = [
-    path('metrics/', metrics_view, name='metrics'),
+    path('metrics/', prometheus_metrics_view, name='metrics'),
+    path('redis-metrics/', redis_metrics_view, name='redis-metrics'),
 ]

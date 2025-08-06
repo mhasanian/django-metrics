@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount the shared metrics directory
+      - ./metrics-data:/app/metrics-data
+    restart: unless-stopped
+  
+  redis:
+    image: redis:7.4
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    command: >
+      redis-server --appendonly yes
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      # Mount the prometheus config file and the shared metrics directory (read-only)
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./metrics-data:/tmp/django_metrics:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    depends_on:
+      - app
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount the provisioning files for datasources and dashboards
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+volumes:
+  redis-data:
