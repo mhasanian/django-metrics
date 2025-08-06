@@ -1,0 +1,41 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "annotations": { "list": [] },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "title": "Average Response Time (10s)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "fillOpacity": 10 },
+          "unit": "s"
+        }
+      },
+      "targets": [
+        {
+          "expr": "rate(app_http_request_latency_seconds_sum[10s]) / rate(app_http_request_latency_seconds_count[10s])",
+          "legendFormat": "{{ method }} - {{ view_name }}",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": { "list": [] },
+  "time": { "from": "now-10s", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Django App Performance",
+  "uid": "django-perf-dashboard"
+}
